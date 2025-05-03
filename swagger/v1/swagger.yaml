@@ -1,0 +1,85 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/login":
+    post:
+      summary: Logs in a user or creates a new one
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  access_token_expires_at:
+                    type: string
+                    format: date-time
+                  username:
+                    type: string
+                required:
+                - access_token
+                - username
+        '201':
+          description: successful signup (created)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  access_token_expires_at:
+                    type: string
+                    format: date-time
+                  username:
+                    type: string
+                required:
+                - access_token
+                - username
+        '401':
+          description: invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '400':
+          description: bad request (e.g., missing password)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                  error:
+                    type: string
+                  exception:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: Juriba
+                password:
+                  type: string
+                  format: password
+                  example: password123
+              required:
+              - username
+              - password
