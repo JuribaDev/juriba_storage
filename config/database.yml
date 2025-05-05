@@ -9,11 +9,7 @@ sqlite: &sqlite
 
 development:
   <<: *default
-  database: juriba_storage_db_development
-  username: postgres
-  password: postgres
-  host: localhost
-  port: 5432
+  url: <%= ENV["DATABASE_URL"] %>
 
 test:
   <<: *sqlite
@@ -21,8 +17,4 @@ test:
 
 production:
   <<: *default
-  database: juriba_storage_db_production
-  username: postgres
-  password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
-  host: <%= ENV["MYAPP_DATABASE_HOST"] %>
-  port: <%= ENV["MYAPP_DATABASE_PORT"] %>
+  url: <%= ENV["DATABASE_URL"] %>
