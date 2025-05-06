@@ -1,12 +1,12 @@
 require "jwt"
 
 module JsonWebToken
-  ACCESS_SECRET_KEY = Rails.application.credentials.secret_key_base || "dev_access_secret"
+  ACCESS_SECRET_KEY = ENV.fetch("ACCESS_SECRET_KEY") { "secret" }
   ALGORITHM_TYPE = "HS256"
 
   # Encode Access Token
   def self.encode_access_token(payload)
-    payload[:exp] = 10.minutes.from_now.to_i
+    payload[:exp] = 20.minutes.from_now.to_i
     JWT.encode(payload, ACCESS_SECRET_KEY, ALGORITHM_TYPE)
   end
 
