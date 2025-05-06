@@ -4,6 +4,26 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/v1/blobs/generate_uuid":
+    get:
+      summary: Generate a new UUID for blob creation
+      description: This endpoint generates a valid UUID that can be used when creating a new blob. No authentication required.
+      tags:
+      - Blobs
+      responses:
+        '200':
+          description: UUID generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                    example: 550e8400-e29b-41d4-a716-446655440000
+                required:
+                - uuid
   "/api/v1/login":
     post:
       summary: Logs in a user or creates a new one
@@ -54,19 +74,6 @@ paths:
                 properties:
                   error:
                     type: string
-        '400':
-          description: bad request (e.g., missing password)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: integer
-                  error:
-                    type: string
-                  exception:
-                    type: string
       requestBody:
         content:
           application/json:
@@ -83,3 +90,109 @@ paths:
               required:
               - username
               - password
+  "/api/v1/blobs":
+    post:
+      summary: Store a new blob
+      tags:
+      - Blobs
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          schema:
+            type: string
+          required: true
+          description: Unique request ID for idempotent operations
+          example: 550e8400-e29b-41d4-a716-446655440000
+      responses:
+        '201':
+          description: Blob created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  data:
+                    type: string
+                  size:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - data
+                - size
+                - created_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: 550e8400-e29b-41d4-a716-446655440000
+                data:
+                  type: string
+                  description: Base64 encoded blob
+                  example: SGVsbG8gV29ybGQh
+              required:
+              - id
+              - data
+  "/api/v1/blobs/{id}":
+    get:
+      summary: Retrieve a blob by ID
+      tags:
+      - Blobs
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: The UUID of the blob to retrieve
+      responses:
+        '200':
+          description: Blob retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  data:
+                    type: string
+                  size:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - data
+                - size
+                - created_at
+        '404':
+          description: Blob not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_221213) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
+ActiveRecord::Schema[8.0].define(version: 2025_05_05_203323) do
+  create_table "blob_trackers", id: { type: :string, limit: 26 }, force: :cascade do |t|
+    t.string "blob_id", limit: 26
+    t.integer "blob_size"
+    t.string "storage_type"
+    t.datetime "created_at"
+    t.index ["blob_id"], name: "index_blob_trackers_on_blob_id", unique: true
+    t.index ["id"], name: "index_blob_trackers_on_id", unique: true
+  end
 
   create_table "refresh_tokens", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -23,6 +29,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_221213) do
     t.index ["token_digest"], name: "index_refresh_tokens_on_token_digest"
     t.index ["user_id", "token_digest"], name: "index_refresh_tokens_on_user_id_and_token_digest"
     t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
+  end
+
+  create_table "stored_blobs", id: { type: :string, limit: 26 }, force: :cascade do |t|
+    t.binary "data"
+    t.integer "size"
+    t.datetime "created_at"
   end
 
   create_table "users", force: :cascade do |t|

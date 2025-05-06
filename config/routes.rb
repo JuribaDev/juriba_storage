@@ -1,14 +1,18 @@
 Rails.application.routes.draw do
   mount Rswag::Ui::Engine => "/api-docs"
   mount Rswag::Api::Engine => "/api-docs"
-  get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
     namespace :v1 do
       # Authentication routes
       post "login", to: "authentication#login"
-      post "refresh", to: "authentication#refresh"
-      delete "logout", to: "authentication#logout"
+      # Blob routes
+      resources :blobs, only: [ :create, :show ], param: :id do
+        collection do
+          get :generate_uuid
+        end
+      end
     end
+    get "/up", to: proc { [ 200, {}, [ "OK" ] ] }
   end
 end

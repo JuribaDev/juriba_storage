@@ -94,9 +94,33 @@ GEM
       reline (>= 0.3.8)
     diff-lcs (1.6.1)
     dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.1)
+    dry-auto_inject (1.1.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-configurable (1.3.0)
+      dry-core (~> 1.1)
+      zeitwerk (~> 2.6)
+    dry-core (1.1.0)
+      concurrent-ruby (~> 1.0)
+      logger
+      zeitwerk (~> 2.6)
+    dry-inflector (1.2.0)
+    dry-system (1.2.2)
+      dry-auto_inject (~> 1.1)
+      dry-configurable (~> 1.3)
+      dry-core (~> 1.1)
+      dry-inflector (~> 1.1)
     ed25519 (1.3.0)
     erubi (1.13.1)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -138,6 +162,9 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
+    net-ftp (0.3.8)
+      net-protocol
+      time
     net-imap (0.5.8)
       date
       net-protocol
@@ -316,9 +343,12 @@ GEM
     thruster (0.1.13-aarch64-linux)
     thruster (0.1.13-arm64-darwin)
     thruster (0.1.13-x86_64-linux)
+    time (0.4.1)
+      date
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    ulid (1.4.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -346,8 +376,12 @@ DEPENDENCIES
   bootsnap
   brakeman
   debug
+  dotenv-rails
+  dry-system (~> 1.0, >= 1.0.1)
+  factory_bot_rails
   jwt (~> 2.10, >= 2.10.1)
   kamal
+  net-ftp
   pg (~> 1.5, >= 1.5.9)
   puma (>= 5.0)
   rack-cors
@@ -362,6 +396,7 @@ DEPENDENCIES
   sqlite3 (>= 2.1)
   thruster
   tzinfo-data
+  ulid (~> 1.4)
 
 BUNDLED WITH
    2.6.8
